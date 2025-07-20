@@ -21,6 +21,12 @@ For example, in your .toc file you could define the following:
 
 ## How do I use it (API)?
 
+### For groups
+
+NYI
+
+### For guilds
+
 NYI
 
 ## Example code:

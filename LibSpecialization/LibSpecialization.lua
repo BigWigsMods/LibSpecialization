@@ -625,7 +625,7 @@ end
 do
 	local prev = 0
 	local timer = nil
-	function LS.RequestGroupSpecialization()
+	function LS.RequestGroupSpecialization() -- Group comms are automatic, you should never need to use this
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGroup do
@@ -657,7 +657,7 @@ end
 do
 	local prev = 0
 	local timer = nil
-	function LS.RequestGuildSpecialization()
+	function LS.RequestGuildSpecialization() -- Guild comms are manual, you will need to manually request data each time
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGuild do
