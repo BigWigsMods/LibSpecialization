@@ -5,37 +5,37 @@ exclude_files = {
 	"**/LibStub",
 }
 ignore = {
-	"212/self", -- (W212) unused argument self
-	"113/IsInGuild",
-	"113/WOW_PROJECT_ID",
-}
-read_globals = {
 	-- Addon
-	"LibStub",
+	"113/LibStub",
+	"113/WOW_PROJECT_ID",
+
+	"212/self", -- XXX remove me after removing the deprecated API calls
 
 	-- WoW (general API)
-	"Ambiguate",
-	"C_ChatInfo",
-	"C_ClassTalents",
-	"C_SpecializationInfo",
-	"C_Timer",
-	"C_Traits",
-	"CreateFrame",
-	"geterrorhandler",
-	"GetSpecialization",
-	"GetSpecializationInfo",
-	"GetTime",
-	"IsInGroup",
-	"IsInRaid",
-	"IsLoggedIn",
-	"UnitNameUnmodified",
+	"113/IsInGuild",
+	"113/Ambiguate",
+	"113/C_ChatInfo",
+	"113/C_ClassTalents",
+	"113/C_SpecializationInfo",
+	"113/C_Timer",
+	"113/C_Traits",
+	"113/CreateFrame",
+	"113/geterrorhandler",
+	"113/GetTime",
+	"113/IsInGroup",
+	"113/IsLoggedIn",
+	"113/UnitNameUnmodified",
 
 	-- Cataclysm
-	"GetPrimaryTalentTree",
-	"GetTalentTabInfo",
-	"IsPlayerSpell",
+	"113/GetPrimaryTalentTree",
+	"113/GetTalentTabInfo",
+	"113/IsPlayerSpell",
 
 	-- Mists
-	"C_EncodingUtil",
-	"GetGlyphSocketInfo",
+	"113/C_EncodingUtil",
+	"113/GetGlyphSocketInfo",
+
+	-- XXX Deprecated with 11.2
+	"113/GetSpecialization",
+	"113/GetSpecializationInfo",
 }

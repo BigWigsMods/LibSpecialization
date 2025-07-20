@@ -4,10 +4,10 @@ local cataWowID = 14
 local mistsWowID = 19
 if wowID ~= 1 and wowID ~= cataWowID and wowID ~= mistsWowID then return end -- Retail, Cata, Mists
 
-local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 19)
+local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 20)
 if not LS then return end -- No upgrade needed
 
-LS.callbackMap = LS.callbackMap or {}
+LS.callbackMapGroup = LS.callbackMapGroup or LS.callbackMap or {} -- LS.callbackMap is v19 and below
 LS.callbackMapGuild = LS.callbackMapGuild or {}
 LS.frame = LS.frame or CreateFrame("Frame")
 
@@ -53,52 +53,6 @@ local positionTable = wowID == cataWowID and {
 	[746] = "MELEE", -- Arms (DPS)
 	[815] = "MELEE", -- Fury (DPS)
 	[845] = "MELEE", -- Protection (Tank)
-} or wowID == mistsWowID and {
-	-- Death Knight
-	[250] = "MELEE", -- Blood (Tank)
-	[251] = "MELEE", -- Frost (DPS)
-	[252] = "MELEE", -- Unholy (DPS)
-	-- Druid
-	[102] = "RANGED", -- Balance (DPS Owl)
-	[103] = "MELEE", -- Feral (DPS Cat)
-	[104] = "MELEE", -- Guardian (Tank Bear)
-	[105] = "RANGED", -- Restoration (Heal)
-	-- Hunter
-	[253] = "RANGED", -- Beast Mastery
-	[254] = "RANGED", -- Marksmanship
-	[255] = "RANGED", -- Survival
-	-- Mage
-	[62] = "RANGED", -- Arcane
-	[63] = "RANGED", -- Fire
-	[64] = "RANGED", -- Frost
-	-- Monk
-	[268] = "MELEE", -- Brewmaster (Tank)
-	[269] = "MELEE", -- Windwalker (DPS)
-	[270] = "MELEE", -- Mistweaver (Heal)
-	-- Paladin
-	[65] = "RANGED", -- Holy (Heal)
-	[66] = "MELEE", -- Protection (Tank)
-	[70] = "MELEE", -- Retribution (DPS)
-	-- Priest
-	[256] = "RANGED", -- Discipline (Heal)
-	[257] = "RANGED", -- Holy (Heal)
-	[258] = "RANGED", -- Shadow (DPS)
-	-- Rogue
-	[259] = "MELEE", -- Assassination
-	[260] = "MELEE", -- Combat
-	[261] = "MELEE", -- Subtlety
-	-- Shaman
-	[262] = "RANGED", -- Elemental (DPS)
-	[263] = "MELEE", -- Enhancement (DPS)
-	[264] = "RANGED", -- Restoration (Heal)
-	-- Warlock
-	[265] = "RANGED", -- Affliction
-	[266] = "RANGED", -- Demonology
-	[267] = "RANGED", -- Destruction
-	-- Warrior
-	[71] = "MELEE", -- Arms (DPS)
-	[72] = "MELEE", -- Fury (DPS)
-	[73] = "MELEE", -- Protection (Tank)
 } or {
 	-- Death Knight
 	[250] = "MELEE", -- Blood (Tank)
@@ -119,7 +73,7 @@ local positionTable = wowID == cataWowID and {
 	-- Hunter
 	[253] = "RANGED", -- Beast Mastery
 	[254] = "RANGED", -- Marksmanship
-	[255] = "MELEE", -- Survival
+	[255] = wowID == mistsWowID and "RANGED" or "MELEE", -- Survival [Ranged on Mists, Melee on Retail]
 	-- Mage
 	[62] = "RANGED", -- Arcane
 	[63] = "RANGED", -- Fire
@@ -129,7 +83,7 @@ local positionTable = wowID == cataWowID and {
 	[269] = "MELEE", -- Windwalker (DPS)
 	[270] = "MELEE", -- Mistweaver (Heal)
 	-- Paladin
-	[65] = "MELEE", -- Holy (Heal)
+	[65] = wowID == mistsWowID and "RANGED" or "MELEE", -- Holy (Heal) [Ranged on Mists, Melee on Retail]
 	[66] = "MELEE", -- Protection (Tank)
 	[70] = "MELEE", -- Retribution (DPS)
 	-- Priest
@@ -138,7 +92,7 @@ local positionTable = wowID == cataWowID and {
 	[258] = "RANGED", -- Shadow (DPS)
 	-- Rogue
 	[259] = "MELEE", -- Assassination
-	[260] = "MELEE", -- Outlaw
+	[260] = "MELEE", -- Outlaw [Retail] / Combat [Mists]
 	[261] = "MELEE", -- Subtlety
 	-- Shaman
 	[262] = "RANGED", -- Elemental (DPS)
@@ -195,52 +149,6 @@ local roleTable = wowID == cataWowID and {
 	[746] = "DAMAGER", -- Arms (DPS)
 	[815] = "DAMAGER", -- Fury (DPS)
 	[845] = "TANK", -- Protection (Tank)
-} or wowID == mistsWowID and {
-	-- Death Knight
-	[250] = "TANK", -- Blood (Tank)
-	[251] = "DAMAGER", -- Frost (DPS)
-	[252] = "DAMAGER", -- Unholy (DPS)
-	-- Druid
-	[102] = "DAMAGER", -- Balance (DPS Owl)
-	[103] = "DAMAGER", -- Feral (DPS Cat)
-	[104] = "TANK", -- Guardian (Tank Bear)
-	[105] = "HEALER", -- Restoration (Heal)
-	-- Hunter
-	[253] = "DAMAGER", -- Beast Mastery
-	[254] = "DAMAGER", -- Marksmanship
-	[255] = "DAMAGER", -- Survival
-	-- Mage
-	[62] = "DAMAGER", -- Arcane
-	[63] = "DAMAGER", -- Fire
-	[64] = "DAMAGER", -- Frost
-	-- Monk
-	[268] = "TANK", -- Brewmaster (Tank)
-	[269] = "DAMAGER", -- Windwalker (DPS)
-	[270] = "HEALER", -- Mistweaver (Heal)
-	-- Paladin
-	[65] = "HEALER", -- Holy (Heal)
-	[66] = "TANK", -- Protection (Tank)
-	[70] = "DAMAGER", -- Retribution (DPS)
-	-- Priest
-	[256] = "HEALER", -- Discipline (Heal)
-	[257] = "HEALER", -- Holy (Heal)
-	[258] = "DAMAGER", -- Shadow (DPS)
-	-- Rogue
-	[259] = "DAMAGER", -- Assassination
-	[260] = "DAMAGER", -- Combat
-	[261] = "DAMAGER", -- Subtlety
-	-- Shaman
-	[262] = "DAMAGER", -- Elemental (DPS)
-	[263] = "DAMAGER", -- Enhancement (DPS)
-	[264] = "HEALER", -- Restoration (Heal)
-	-- Warlock
-	[265] = "DAMAGER", -- Affliction
-	[266] = "DAMAGER", -- Demonology
-	[267] = "DAMAGER", -- Destruction
-	-- Warrior
-	[71] = "DAMAGER", -- Arms (DPS)
-	[72] = "DAMAGER", -- Fury (DPS)
-	[73] = "TANK", -- Protection (Tank)
 } or {
 	-- Death Knight
 	[250] = "TANK", -- Blood (Tank)
@@ -280,7 +188,7 @@ local roleTable = wowID == cataWowID and {
 	[258] = "DAMAGER", -- Shadow (DPS)
 	-- Rogue
 	[259] = "DAMAGER", -- Assassination
-	[260] = "DAMAGER", -- Outlaw
+	[260] = "DAMAGER", -- Outlaw [Retail] / Combat [Mists]
 	[261] = "DAMAGER", -- Subtlety
 	-- Shaman
 	[262] = "DAMAGER", -- Elemental (DPS)
@@ -312,23 +220,181 @@ local starterSpecs = {
 	[1465] = true, -- Evoker
 }
 
-local callbackMap = LS.callbackMap
+local callbackMapGroup = LS.callbackMapGroup
 local callbackMapGuild = LS.callbackMapGuild
 
-local next, type, error, tonumber, format = next, type, error, tonumber, string.format
-local IsInGroup, geterrorhandler, GetTime = IsInGroup, geterrorhandler, GetTime
-local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
-local SendAddonMessage, CTimerNewTimer = C_ChatInfo.SendAddonMessage, C_Timer.NewTimer
-local pName = UnitNameUnmodified("player")
-local throttleTimer = 3
+local type, error, format = type, error, string.format
+local geterrorhandler, GetTime = geterrorhandler, GetTime
 
 do
 	local result = C_ChatInfo.RegisterAddonMessagePrefix("LibSpec")
-	if type(result) == "number" and result > 2 then
+	-- 0=success, 1=duplicate, 2=invalid, 3=toomany
+	if type(result) == "number" and result > 1 then
 		error("LibSpecialization: Failed to register the addon prefix.")
 	end
 end
 
+-- XXX DEPRECATED
+function LS:Register(addon, func)
+	geterrorhandler()(format("LibSpecialization: Register is deprecated, use RegisterGroup instead."))
+
+	local t = type(func)
+	if t == "string" then
+		callbackMapGroup[addon] = function(...) addon[func](addon, ...) end
+	elseif t == "function" then
+		callbackMapGroup[addon] = func
+	else
+		error("LibSpecialization: Incorrect function type for :Register.")
+	end
+end
+
+function LS:Unregister(addon)
+	geterrorhandler()(format("LibSpecialization: Unregister is deprecated, use UnregisterGroup instead."))
+	callbackMapGroup[addon] = nil
+end
+-- XXX END DEPRECATED
+
+-- Handle groups (comms are automatic)
+function LS.RegisterGroup(addon, func)
+	if type(addon) ~= "table" or addon == LS then
+		error("LibSpecialization: The function lib.RegisterGroup expects your own addon object as the first arg.")
+	end
+
+	local t = type(func)
+	if t == "function" then
+		callbackMapGroup[addon] = func
+	else
+		error("LibSpecialization: The function lib.RegisterGroup expects your own function as the second arg.")
+	end
+end
+
+function LS.UnregisterGroup(addon)
+	if type(addon) ~= "table" or addon == LS then
+		error("LibSpecialization: The function lib.UnregisterGroup expects your own addon object.")
+	end
+	callbackMapGroup[addon] = nil
+end
+
+-- Handle guilds (comms are on manual request)
+function LS.RegisterGuild(addon, func)
+	if type(addon) ~= "table" or addon == LS then
+		error("LibSpecialization: The function lib.RegisterGuild expects your own addon object as the first arg.")
+	end
+
+	local t = type(func)
+	if t == "function" then
+		callbackMapGuild[addon] = func
+	else
+		error("LibSpecialization: The function lib.RegisterGuild expects your own function as the second arg.")
+	end
+end
+
+function LS.UnregisterGuild(addon)
+	if type(addon) ~= "table" or addon == LS then
+		error("LibSpecialization: The function lib.UnregisterGuild expects your own addon object.")
+	end
+	callbackMapGuild[addon] = nil
+end
+
+local GetInfo
+if wowID == cataWowID then
+	function GetInfo()
+		local specIndex = GetPrimaryTalentTree()
+		if specIndex then
+			local specId = GetTalentTabInfo(specIndex)
+			if type(specId) == "number" and specId > 0 then
+				local position = positionTable[specId]
+				local role = roleTable[specId]
+				if position and role then
+					if specId == 750 and not IsPlayerSpell(57880) then -- Cataclysm Feral Druids, if you don't have 2 points in 'Natural Reaction' we assume you're a cat
+						return specId, "DAMAGER", position
+					end
+					return specId, role, position
+				else
+					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+				end
+			end
+		end
+	end
+elseif wowID == mistsWowID then
+	local GetSpecialization, GetSpecializationInfo = C_SpecializationInfo.GetSpecialization, C_SpecializationInfo.GetSpecializationInfo
+	local GetTalentInfo, GetGlyphSocketInfo = C_SpecializationInfo.GetTalentInfo, GetGlyphSocketInfo
+	local SerializeJSON = C_EncodingUtil.SerializeJSON
+	function GetInfo()
+		local spec = GetSpecialization()
+		if type(spec) == "number" and spec > 0 then
+			local specId = GetSpecializationInfo(spec)
+
+			if type(specId) == "number" and specId > 0 then
+				local position = positionTable[specId]
+				local role = roleTable[specId]
+				if position and role then
+					local storageTable = {
+						talents = {0, 0, 0, 0, 0, 0}, -- 6 tiers/rows
+						glyphs = {0, 0, 0, 0, 0, 0}, -- 6 glyphs
+					}
+
+					-- Fill in the talents
+					for tier = 1, 6 do -- 6 rows
+						for column = 1, 3 do -- 3 columns
+							local talentInfo = GetTalentInfo({tier=tier, column=column})
+							if talentInfo.known and type(talentInfo.talentID) == "number" then
+								storageTable.talents[tier] = talentInfo.talentID
+								break
+							end
+						end
+					end
+
+					-- Fill in the glyphs
+					for glyphSlot = 1, 6 do -- There are 6 glyphs in total, 3 major and 3 minor
+						local _, _, _, _, _, glyphID = GetGlyphSocketInfo(glyphSlot)
+						if type(glyphID) == "number" then
+							storageTable.glyphs[glyphSlot] = glyphID
+						end
+					end
+
+					local talentsAndGlyphsJSON = SerializeJSON(storageTable)
+					return specId, role, position, talentsAndGlyphsJSON
+				elseif not starterSpecs[specId] then
+					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+				end
+			end
+		end
+	end
+else
+	local C_Traits_GenerateImportString = C_Traits.GenerateImportString
+	local C_ClassTalents_GetActiveConfigID = C_ClassTalents.GetActiveConfigID
+	-- XXX compat code for 11.2
+	local GetSpecialization, GetSpecializationInfo = C_SpecializationInfo.GetSpecialization or GetSpecialization, C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+	function GetInfo()
+		local spec = GetSpecialization()
+		if type(spec) == "number" and spec > 0 then
+			local specId = GetSpecializationInfo(spec)
+
+			if type(specId) == "number" and specId > 0 then
+				local position = positionTable[specId]
+				local role = roleTable[specId]
+				if position and role then
+					local activeConfigID = C_ClassTalents_GetActiveConfigID()
+					if activeConfigID then
+						local talentString = C_Traits_GenerateImportString(activeConfigID)
+						return specId, role, position, talentString
+					end
+					return specId, role, position
+				elseif not starterSpecs[specId] then
+					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+				end
+			end
+		end
+	end
+end
+
+local throttleTimer = 3 -- Seconds
+local pName = UnitNameUnmodified("player")
+local SendAddonMessage = C_ChatInfo.SendAddonMessage
+local IsInGroup = IsInGroup
+local CTimerNewTimer = C_Timer.NewTimer
+local next = next
 do
 	local currentSpecId, currentTalentString, currentRole = 0, nil, nil
 
@@ -352,7 +418,7 @@ do
 			end
 		end
 		function PrepareForInstance()
-			local specId, role, _, talentString = LS:MySpecialization()
+			local specId, role, _, talentString = GetInfo()
 			if specId then
 				currentSpecId = specId
 				currentTalentString = talentString
@@ -384,7 +450,7 @@ do
 			end
 		end
 		function PrepareForGroup()
-			local specId, role, _, talentString = LS:MySpecialization()
+			local specId, role, _, talentString = GetInfo()
 			if specId then
 				currentSpecId = specId
 				currentTalentString = talentString
@@ -420,7 +486,7 @@ do
 			end
 		end
 		function PrepareForGuild()
-			local specId, role, _, talentString = LS:MySpecialization()
+			local specId, role, _, talentString = GetInfo()
 			if specId then
 				currentSpecId = specId
 				currentTalentString = talentString
@@ -439,13 +505,14 @@ do
 	end
 
 	local approved = {
-		RAID = callbackMap,
-		PARTY = callbackMap,
-		INSTANCE_CHAT = callbackMap,
+		RAID = callbackMapGroup,
+		PARTY = callbackMapGroup,
+		INSTANCE_CHAT = callbackMapGroup,
 		GUILD = callbackMapGuild,
 	}
-	local strmatch = string.match
+	local tonumber, strmatch = tonumber, string.match
 	local Ambiguate = Ambiguate
+	local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 	LS.frame:SetScript("OnEvent", function(_, event, prefix, msg, channel, sender)
 		if event == "CHAT_MSG_ADDON" then
 			if prefix == "LibSpec" and approved[channel] then -- Only approved channels
@@ -495,9 +562,9 @@ do
 					PrepareForGroup()
 				end
 			else
-				local specId, role, position, talentString = LS:MySpecialization()
+				local specId, role, position, talentString = GetInfo()
 				if specId then
-					for _,func in next, callbackMap do
+					for _,func in next, callbackMapGroup do
 						func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 					end
 				end
@@ -519,104 +586,16 @@ do
 	LS.frame:RegisterEvent("PLAYER_LOGIN")
 end
 
-if wowID == cataWowID then
-	function LS:MySpecialization()
-		local specIndex = GetPrimaryTalentTree()
-		if specIndex then
-			local specId = GetTalentTabInfo(specIndex)
-			if type(specId) == "number" and specId > 0 then
-				local position = positionTable[specId]
-				local role = roleTable[specId]
-				if position and role then
-					if specId == 750 and not IsPlayerSpell(57880) then -- Cataclysm Feral Druids, if you don't have 2 points in 'Natural Reaction' we assume you're a cat
-						return specId, "DAMAGER", position
-					end
-					return specId, role, position
-				else
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
-				end
-			end
-		end
-	end
-elseif wowID == mistsWowID then
-	local GetSpecialization, GetSpecializationInfo = C_SpecializationInfo.GetSpecialization, C_SpecializationInfo.GetSpecializationInfo
-	local GetTalentInfo, GetGlyphSocketInfo = C_SpecializationInfo.GetTalentInfo, GetGlyphSocketInfo
-	local SerializeJSON = C_EncodingUtil.SerializeJSON
-	function LS:MySpecialization()
-		local spec = GetSpecialization()
-		if type(spec) == "number" and spec > 0 then
-			local specId = GetSpecializationInfo(spec)
-
-			if type(specId) == "number" and specId > 0 then
-				local position = positionTable[specId]
-				local role = roleTable[specId]
-				if position and role then
-					local storageTable = {
-						talents = {0, 0, 0, 0, 0, 0}, -- 6 tiers/rows
-						glyphs = {0, 0, 0, 0, 0, 0}, -- 6 glyphs
-					}
-
-					-- Fill in the talents
-					for tier = 1, 6 do -- 6 rows
-						for column = 1, 3 do -- 3 columns
-							local talentInfo = GetTalentInfo({tier=tier, column=column})
-							if talentInfo.known and type(talentInfo.talentID) == "number" then
-								storageTable.talents[tier] = talentInfo.talentID
-								break
-							end
-						end
-					end
-
-					-- Fill in the glyphs
-					for glyphSlot = 1, 6 do -- There are 6 glyphs in total, 3 major and 3 minor
-						local _, _, _, _, _, glyphID = GetGlyphSocketInfo(glyphSlot)
-						if type(glyphID) == "number" then
-							storageTable.glyphs[glyphSlot] = glyphID
-						end
-					end
-
-					local talentsAndGlyphsJSON = SerializeJSON(storageTable)
-					return specId, role, position, talentsAndGlyphsJSON
-				elseif not starterSpecs[specId] then
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
-				end
-			end
-		end
-	end
-else
-	local C_Traits_GenerateImportString = C_Traits.GenerateImportString
-	-- XXX compat code for 11.2
-	local GetSpecialization, GetSpecializationInfo = C_SpecializationInfo.GetSpecialization or GetSpecialization, C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
-	function LS:MySpecialization()
-		local spec = GetSpecialization()
-		if type(spec) == "number" and spec > 0 then
-			local specId = GetSpecializationInfo(spec)
-
-			if type(specId) == "number" and specId > 0 then
-				local position = positionTable[specId]
-				local role = roleTable[specId]
-				if position and role then
-					local activeConfigID = C_ClassTalents_GetActiveConfigID()
-					if activeConfigID then
-						local talentString = C_Traits_GenerateImportString(activeConfigID)
-						return specId, role, position, talentString
-					end
-					return specId, role, position
-				elseif not starterSpecs[specId] then
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
-				end
-			end
-		end
-	end
-end
-
+-- XXX DEPRECATED
 do
 	local prev = 0
 	local timer = nil
 	function LS:RequestSpecialization()
-		local specId, role, position, talentString = LS:MySpecialization()
+		geterrorhandler()(format("LibSpecialization: RequestSpecialization is deprecated, use RequestGroupSpecialization instead."))
+
+		local specId, role, position, talentString = GetInfo()
 		if specId then
-			for _,func in next, callbackMap do
+			for _,func in next, callbackMapGroup do
 				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 			end
 		end
@@ -641,12 +620,45 @@ do
 		end
 	end
 end
+-- XXX END DEPRECATED
+
+do
+	local prev = 0
+	local timer = nil
+	function LS.RequestGroupSpecialization()
+		local specId, role, position, talentString = GetInfo()
+		if specId then
+			for _,func in next, callbackMapGroup do
+				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
+			end
+		end
+
+		if IsInGroup() then
+			local t = GetTime()
+			if t-prev > throttleTimer then
+				if timer then
+					timer:Cancel()
+					timer = nil
+				end
+				prev = t
+				if IsInGroup(2) then
+					SendAddonMessage("LibSpec", "R", "INSTANCE_CHAT")
+				end
+				if IsInGroup(1) then
+					SendAddonMessage("LibSpec", "R", "RAID")
+				end
+			elseif not timer then
+				timer = CTimerNewTimer((throttleTimer+0.1)-(t-prev), LS.RequestGroupSpecialization)
+			end
+		end
+	end
+end
 
 do
 	local prev = 0
 	local timer = nil
 	function LS.RequestGuildSpecialization()
-		local specId, role, position, talentString = LS:MySpecialization()
+		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGuild do
 				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
@@ -670,47 +682,5 @@ do
 end
 
 if IsLoggedIn() and not oldminor then -- Player is logged in and library isn't upgrading
-	LS:RequestSpecialization()
-end
-
-function LS:Register(addon, func)
-	if not addon or addon == LS then
-		error("LibSpecialization: You must pass your own addon name or object to :Register.")
-	end
-
-	local t = type(func)
-	if t == "string" then
-		callbackMap[addon] = function(...) addon[func](addon, ...) end
-	elseif t == "function" then
-		callbackMap[addon] = func
-	else
-		error("LibSpecialization: Incorrect function type for :Register.")
-	end
-end
-
-function LS:Unregister(addon)
-	if not addon or addon == LS then
-		error("LibSpecialization: You must pass your own addon name or object to :Unregister.")
-	end
-	callbackMap[addon] = nil
-end
-
-function LS.RegisterGuild(addon, func)
-	if type(addon) ~= "table" or addon == LS then
-		error("LibSpecialization: The function lib.RegisterGuild expects your own addon object as the first arg.")
-	end
-
-	local t = type(func)
-	if t == "function" then
-		callbackMapGuild[addon] = func
-	else
-		error("LibSpecialization: The function lib.RegisterGuild expects your own function as the second arg.")
-	end
-end
-
-function LS.UnregisterGuild(addon)
-	if type(addon) ~= "table" or addon == LS then
-		error("LibSpecialization: The function lib.UnregisterGuild expects your own addon object.")
-	end
-	callbackMapGuild[addon] = nil
+	LS.RequestGroupSpecialization()
 end
