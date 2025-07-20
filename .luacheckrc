@@ -12,7 +12,6 @@ ignore = {
 	"212/self", -- XXX remove me after removing the deprecated API calls
 
 	-- WoW (general API)
-	"113/IsInGuild",
 	"113/Ambiguate",
 	"113/C_ChatInfo",
 	"113/C_ClassTalents",
@@ -23,7 +22,9 @@ ignore = {
 	"113/geterrorhandler",
 	"113/GetTime",
 	"113/IsInGroup",
+	"113/IsInGuild",
 	"113/IsLoggedIn",
+	"113/securecallfunction",
 	"113/UnitNameUnmodified",
 
 	-- Cataclysm

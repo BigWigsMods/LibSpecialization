@@ -4,7 +4,7 @@ local cataWowID = 14
 local mistsWowID = 19
 if wowID ~= 1 and wowID ~= cataWowID and wowID ~= mistsWowID then return end -- Retail, Cata, Mists
 
-local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 21)
+local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 22)
 if not LS then return end -- No upgrade needed
 
 LS.callbackMapGroup = LS.callbackMapGroup or LS.callbackMap or {} -- LS.callbackMap is v19 and below
@@ -395,7 +395,7 @@ local pName = UnitNameUnmodified("player")
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local IsInGroup = IsInGroup
 local CTimerNewTimer = C_Timer.NewTimer
-local next = next
+local next, securecallfunction = next, securecallfunction
 do
 	local currentSpecId, currentTalentString, currentRole = 0, nil, nil
 
@@ -548,7 +548,7 @@ do
 					local playerName = Ambiguate(sender, "none")
 					local talents = talentString and #talentString > 2 and talentString or nil
 					for _,func in next, approved[channel] do
-						func(specId, role, position, playerName, talents)
+						securecallfunction(func, specId, role, position, playerName, talents)
 					end
 				end
 			end
@@ -566,7 +566,7 @@ do
 				local specId, role, position, talentString = GetInfo()
 				if specId then
 					for _,func in next, callbackMapGroup do
-						func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
+						securecallfunction(func, specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 					end
 				end
 			end
@@ -597,7 +597,7 @@ do
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGroup do
-				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
+				securecallfunction(func, specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 			end
 		end
 
@@ -630,7 +630,7 @@ do
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGroup do
-				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
+				securecallfunction(func, specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 			end
 		end
 
@@ -662,7 +662,7 @@ do
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGuild do
-				func(specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
+				securecallfunction(func, specId, role, position, pName, talentString) -- This allows us to show our own spec info when not grouped
 			end
 		end
 
