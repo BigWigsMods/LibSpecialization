@@ -4,7 +4,7 @@ local cataWowID = 14
 local mistsWowID = 19
 if wowID ~= 1 and wowID ~= cataWowID and wowID ~= mistsWowID then return end -- Retail, Cata, Mists
 
-local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 20)
+local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 21)
 if not LS then return end -- No upgrade needed
 
 LS.callbackMapGroup = LS.callbackMapGroup or LS.callbackMap or {} -- LS.callbackMap is v19 and below
@@ -388,6 +388,7 @@ else
 		end
 	end
 end
+LS.MySpecialization = GetInfo
 
 local throttleTimer = 3 -- Seconds
 local pName = UnitNameUnmodified("player")
