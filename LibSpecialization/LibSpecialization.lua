@@ -552,7 +552,7 @@ do
 				end
 			end
 		elseif event == "GROUP_FORMED" then -- Join new group
-			LS:RequestSpecialization()
+			LS.RequestGroupSpecialization()
 		elseif event == "PLAYER_TALENT_UPDATE" or event == "PLAYER_SPECIALIZATION_CHANGED" or ((event == "ACTIVE_COMBAT_CONFIG_CHANGED" or event == "TRAIT_CONFIG_UPDATED") and prefix == C_ClassTalents_GetActiveConfigID()) then
 			if IsInGroup() then
 				if IsInGroup(2) then -- Instance group
@@ -570,7 +570,7 @@ do
 				end
 			end
 		elseif event == "PLAYER_LOGIN" then
-			LS:RequestSpecialization()
+			LS.RequestGroupSpecialization()
 		end
 	end)
 	LS.frame:RegisterEvent("CHAT_MSG_ADDON")
