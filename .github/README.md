@@ -24,7 +24,7 @@ For example, in your .toc file you could define the following:
 `LibSpecialization.RegisterGroup(myUniqueTable, function)`
 
 myUniqueTable - A table that is unique to your addon, so that it can be identified if you ever want to unregister it.
-function - A function reference, this will run when receiving specialization information from users.
+function - A function reference, this will run when receiving specialization information from players.
 
 `LibSpecialization.UnregisterGroup(myUniqueTable)`
 
@@ -59,7 +59,7 @@ end)
 `LibSpecialization.RegisterGuild(myUniqueTable, function)`
 
 myUniqueTable - A table that is unique to your addon, so that it can be identified if you ever want to unregister it.
-function - A function reference, this will run when receiving specialization information from users.
+function - A function reference, this will run when receiving specialization information from players.
 
 `LibSpecialization.UnregisterGuild(myUniqueTable)`
 
