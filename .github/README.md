@@ -38,6 +38,15 @@ Returns specialization information of your character.
 
 You should never need to use this. LibSpecialization automatically handles re-transmission when group members change spec.
 
+`LibSpecialization.RegisterPlayerSpecChange(myUniqueTable, function)`
+
+myUniqueTable - A table that is unique to your addon, so that it can be identified if you ever want to unregister it.
+function - A function reference, this will run whenever the player's spec changes. Nothing is passed to this function, it's just a notification event.
+
+`LibSpecialization.UnregisterPlayerSpecChange(myUniqueTable)`
+
+myUniqueTable - The table unique to your addon that you provided when registering.
+
 ## Example code:
 
 ```
