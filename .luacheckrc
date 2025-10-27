@@ -14,6 +14,7 @@ ignore = {
 	"113/C_ChatInfo",
 	"113/C_ClassTalents",
 	"113/C_SpecializationInfo",
+	"113/C_SpellBook",
 	"113/C_Timer",
 	"113/C_Traits",
 	"113/CreateFrame",
@@ -28,7 +29,6 @@ ignore = {
 	-- Cataclysm
 	"113/GetPrimaryTalentTree",
 	"113/GetTalentTabInfo",
-	"113/IsPlayerSpell",
 
 	-- Mists
 	"113/C_EncodingUtil",
