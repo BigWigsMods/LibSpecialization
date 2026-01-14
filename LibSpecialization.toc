@@ -1,4 +1,4 @@
-## Interface: 11508, 11507, 20504, 30405, 38000, 40402, 50503, 50502, 110205, 110207, 120000
+## Interface: 11508, 11507, 20505, 30405, 38000, 40402, 50503, 50502, 120001, 110207, 120000
 ## Version: @project-version@
 ## Title: Lib: Specialization
 ## Notes: A library for transmitting your talent string and specialization to other players, that developers can embed in their addons.
