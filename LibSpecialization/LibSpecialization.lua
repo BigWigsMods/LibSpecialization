@@ -515,10 +515,11 @@ do
 	}
 	local tonumber, strmatch = tonumber, string.match
 	local Ambiguate = Ambiguate
+	local issecretvalue = issecretvalue or function() return false end
 	local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 	LS.frame:SetScript("OnEvent", function(_, event, prefix, msg, channel, sender)
 		if event == "CHAT_MSG_ADDON" then
-			if prefix == "LibSpec" and approved[channel] then -- Only approved channels
+			if not issecretvalue(msg) and prefix == "LibSpec" and approved[channel] then -- Only approved channels
 				if msg == "R" then
 					if channel == "GUILD" then
 						PrepareForGuild()
