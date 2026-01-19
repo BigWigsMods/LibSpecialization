@@ -62,6 +62,7 @@ local positionTable = wowID == cataWowID and {
 	-- Demon Hunter
 	[577] = "MELEE", -- Havoc (DPS)
 	[581] = "MELEE", -- Vengeance (Tank)
+	[1480] = "RANGED", -- Devourer (DPS)
 	-- Druid
 	[102] = "RANGED", -- Balance (DPS Owl)
 	[103] = "MELEE", -- Feral (DPS Cat)
@@ -158,6 +159,7 @@ local roleTable = wowID == cataWowID and {
 	-- Demon Hunter
 	[577] = "DAMAGER", -- Havoc (DPS)
 	[581] = "TANK", -- Vengeance (Tank)
+	[1480] = "DAMAGER", -- Devourer (DPS)
 	-- Druid
 	[102] = "DAMAGER", -- Balance (DPS Owl)
 	[103] = "DAMAGER", -- Feral (DPS Cat)
