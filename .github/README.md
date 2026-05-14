@@ -34,10 +34,6 @@ myUniqueTable - The table unique to your addon that you provided when registerin
 
 Returns specialization information of your character.
 
-`LibSpecialization.RequestGroupSpecialization()`
-
-You should never need to use this. LibSpecialization automatically handles re-transmission when group members change spec.
-
 `LibSpecialization.RegisterPlayerSpecChange(myUniqueTable, function)`
 
 myUniqueTable - A table that is unique to your addon, so that it can be identified if you ever want to unregister it.
