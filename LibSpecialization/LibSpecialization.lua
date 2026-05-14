@@ -403,7 +403,7 @@ do
 	local prev = 0
 	local timer = nil
 	local InChatMessagingLockdown = C_ChatInfo.InChatMessagingLockdown or function() end
-	function RequestGroupSpecialization() -- Group comms are automatic, you should never need to use this
+	function RequestGroupSpecialization()
 		local specId, role, position, talentString = GetInfo()
 		if specId then
 			for _,func in next, callbackMapGroup do
