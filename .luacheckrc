@@ -18,6 +18,7 @@ ignore = {
 	"113/C_Timer",
 	"113/C_Traits",
 	"113/CreateFrame",
+	"113/GetBuildInfo",
 	"113/geterrorhandler",
 	"113/GetTime",
 	"113/IsInGroup",

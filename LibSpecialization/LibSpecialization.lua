@@ -2,9 +2,16 @@
 local wowID = WOW_PROJECT_ID
 local cataWowID = 14
 local mistsWowID = 19
+local isForever = false
+do
+	local _, _, _, version = GetBuildInfo()
+	if version > 16000 and version < 20000 then
+		isForever = true
+	end
+end
 if wowID ~= 1 and wowID ~= cataWowID and wowID ~= mistsWowID then return end -- Retail, Cata, Mists
 
-local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 27)
+local LS, oldminor = LibStub:NewLibrary("LibSpecialization", 28)
 if not LS then return end -- No upgrade needed
 
 LS.callbackMapGroup = LS.callbackMapGroup or {}
@@ -207,7 +214,18 @@ local roleTable = wowID == cataWowID and {
 	[73] = "TANK", -- Protection (Tank)
 }
 -- Starter specs
-local starterSpecs = {
+local starterSpecs = wowID == cataWowID and {
+} or isForever and {
+	[1482] = true, -- Mage
+	[1484] = true, -- Druid
+	[1485] = true, -- Hunter
+	[1486] = true, -- Paladin
+	[1487] = true, -- Priest
+	[1488] = true, -- Rogue
+	[1489] = true, -- Shaman
+	[1490] = true, -- Warlock
+	[1491] = true, -- Warrior
+} or { -- Retail & Mists
 	[1444] = true, -- Shaman
 	[1446] = true, -- Warrior
 	[1447] = true, -- Druid
@@ -314,7 +332,7 @@ if wowID == cataWowID then
 					end
 					return specId, role, position
 				else
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+					geterrorhandler()(format("LibSpecialization: Unknown spec ID %q", specId))
 				end
 			end
 		end
@@ -359,7 +377,7 @@ elseif wowID == mistsWowID then
 					local talentsAndGlyphsJSON = SerializeJSON(storageTable)
 					return specId, role, position, talentsAndGlyphsJSON
 				elseif not starterSpecs[specId] then
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+					geterrorhandler()(format("LibSpecialization: Unknown spec ID %q", specId))
 				end
 			end
 		end
@@ -384,7 +402,7 @@ else
 					end
 					return specId, role, position
 				elseif not starterSpecs[specId] then
-					geterrorhandler()(format("LibSpecialization: Unknown specId %q", specId))
+					geterrorhandler()(format("LibSpecialization: Unknown spec ID %q", specId))
 				end
 			end
 		end
