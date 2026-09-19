@@ -18,7 +18,7 @@
 ## Category-esMX: Bibliotecas
 ## Category-frFR: Bibliothèques
 ## Category-itIT: Bibliotecas
-# Category-koKR: Libraries
+## Category-koKR: 라이브러리
 ## Category-ptBR: Bibliotecas
 ## Category-ruRU: Библиотеки
 ## Category-zhCN: 函数库
