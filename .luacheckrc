@@ -23,6 +23,7 @@ ignore = {
 	"113/IsInGroup",
 	"113/IsInGuild",
 	"113/IsLoggedIn",
+	"113/RegionalUniqueNamesEnabled",
 	"113/securecallfunction",
 	"113/UnitNameUnmodified",
 
