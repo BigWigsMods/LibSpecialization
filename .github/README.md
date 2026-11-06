@@ -30,9 +30,9 @@ function - A function reference, this will run when receiving specialization inf
 
 myUniqueTable - The table unique to your addon that you provided when registering.
 
-`LibSpecialization.MySpecialization()` returns `[specId, role, position, talents]`
+`LibSpecialization.MySpecialization()`
 
-Returns specialization information of your character.
+Returns your character info in this order: `specID` (number), `role` (string), `position` (string), `talents` (string)
 
 `LibSpecialization.RegisterPlayerSpecChange(myUniqueTable, function)`
 
