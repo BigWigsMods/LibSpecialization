@@ -25,6 +25,7 @@ ignore = {
 	"113/IsLoggedIn",
 	"113/RegionalUniqueNamesEnabled",
 	"113/securecallfunction",
+	"143/string",
 	"113/UnitNameUnmodified",
 
 	-- Cataclysm
